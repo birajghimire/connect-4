@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 const squares = document.querySelectorAll('.grid div');
+const result = document.querySelector('#result');
+const newGameButton = document.querySelector(".new-game-btn");
+
 let currentPlayer = 1;
 const winningCombinations = [
     [0, 1, 2, 3],
@@ -73,6 +76,35 @@ const winningCombinations = [
     [13, 20, 27, 34],
   ]
 
+
+newGameButton.addEventListener("click", function() {
+    setTimeout(() => {
+        document.location.reload();
+    }, 0000);
+})
+
+let falseCount = 0
+
+
+function checkWinner() {
+    for(let i = 0; i < winningCombinations.length; i++){
+        const sq1 = winningCombinations[i][0];
+        const sq2 = winningCombinations[i][1];
+        const sq3 = winningCombinations[i][2];
+        const sq4 = winningCombinations[i][3];
+
+        if(squares[sq1].classList.contains('player-one') && squares[sq2].classList.contains('player-one') && squares[sq3].classList.contains('player-one') && squares[sq4].classList.contains('player-one')){
+            result.innerHTML = 'Player 1 Wins!';
+            return true;
+        } 
+        if(squares[sq1].classList.contains('player-two') && squares[sq2].classList.contains('player-two') && squares[sq3].classList.contains('player-two') && squares[sq4].classList.contains('player-two')){
+            result.innerHTML = 'Player 2 Wins!';
+            return true;
+        }   
+    } 
+    falseCount += 1;
+    return false;
+}
 for(let i = 0; i < squares.length; i++) {
     squares[i].addEventListener("click", function() {
         if(!squares[i].classList.contains('taken') && squares[i+7].classList.contains('taken')){
@@ -87,7 +119,18 @@ for(let i = 0; i < squares.length; i++) {
             }
         } else {
             alert('Cannot go here!');
-            checkWinner();
+        }
+        let winOrNo = checkWinner();
+        if(falseCount == 42) {
+            alert('Tie!');
+            setTimeout(() => {
+                document.location.reload();
+            }, 3000);
+        }
+        if(winOrNo == true) {
+            setTimeout(() => {
+                document.location.reload();
+            }, 3000);
         }
 
     });
